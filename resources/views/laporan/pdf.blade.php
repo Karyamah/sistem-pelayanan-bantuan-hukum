@@ -41,7 +41,7 @@
                     <td>{{ $item->perihal }}</td>
                     <td>{{ $item->pic ?? '-' }}</td>
                     <td>{{ $item->notulis ?? '-' }}</td>
-                    <td>{{ ucfirst($item->status) }}</td>
+                   <td>{{ $item->status_label }}</td>
                 </tr>
             @empty
                 <tr>

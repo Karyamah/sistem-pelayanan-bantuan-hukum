@@ -14,11 +14,13 @@
                 <form method="GET" class="d-flex gap-2 flex-wrap">
                     <input type="text" name="cari" value="{{ request('cari') }}" class="form-control" placeholder="Cari no. registrasi, perihal, nama..." style="min-width: 250px;">
                     <select name="status" class="form-select" style="width: auto;">
-                        <option value="">Semua Status</option>
-                        <option value="baru" {{ request('status') == 'baru' ? 'selected' : '' }}>Baru</option>
-                        <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                        <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                    </select>
+    <option value="">Semua Status</option>
+    @foreach (\App\Models\Notulensi::STATUS as $kode => $info)
+        <option value="{{ $kode }}" {{ request('status') == $kode ? 'selected' : '' }}>
+            {{ $info['label'] }}
+        </option>
+    @endforeach
+</select>
                     <button type="submit" class="btn btn-outline-success">
                         <i class="bi bi-search"></i>
                     </button>
@@ -49,13 +51,7 @@
                                 <td>{{ $item->pengadu->nama ?? '-' }}</td>
                                 <td>{{ Str::limit($item->perihal, 30) }}</td>
                                 <td>
-                                    @if ($item->status == 'baru')
-                                        <span class="badge bg-secondary">Baru</span>
-                                    @elseif ($item->status == 'diproses')
-                                        <span class="badge bg-warning text-dark">Diproses</span>
-                                    @else
-                                        <span class="badge bg-success">Selesai</span>
-                                    @endif
+                                    <span class="badge {{ $item->status_badge }}">{{ $item->status_label }}</span>
                                 </td>
                                 <td>{{ $item->pic ?? '-' }}</td>
                                 <td class="text-end">

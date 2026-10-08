@@ -29,13 +29,14 @@ class NotulensiController extends Controller
         return view('notulensi.index', compact('notulensis'));
     }
 
-    public function create()
-    {
-        $pengadus = Pengadu::orderBy('nama')->get();
-        $noRegistrasi = 'BH-' . date('Ym') . '-' . str_pad((Notulensi::whereYear('created_at', date('Y'))->whereMonth('created_at', date('m'))->count() + 1), 4, '0', STR_PAD_LEFT);
+    public function create(Request $request)
+{
+    $pengadus = Pengadu::orderBy('nama')->get();
+    $noRegistrasi = 'BH-' . date('Ym') . '-' . str_pad((Notulensi::whereYear('created_at', date('Y'))->whereMonth('created_at', date('m'))->count() + 1), 4, '0', STR_PAD_LEFT);
+    $selectedPengadu = $request->filled('pengadu_id') ? Pengadu::find($request->pengadu_id) : null;
 
-        return view('notulensi.create', compact('pengadus', 'noRegistrasi'));
-    }
+    return view('notulensi.create', compact('pengadus', 'noRegistrasi', 'selectedPengadu'));
+}
 
     public function store(Request $request)
     {
@@ -48,15 +49,17 @@ class NotulensiController extends Controller
             'perihal' => 'required|string|max:255',
             'uraian_kronologi' => 'required|string',
             'penanganan' => 'nullable|string',
-            'status' => 'required|in:baru,diproses,selesai',
+            'status' => 'required|in:konsultasi,dilimpahkan,ditindaklanjuti,ditangani_jabis,selesai',
             'pic' => 'nullable|string|max:255',
             'notulis' => 'nullable|string|max:255',
             'catatan' => 'nullable|string',
         ]);
+                $validated['dicatat_oleh'] = auth()->id();
 
-        Notulensi::create($validated);
 
-        return redirect()->route('notulensi.index')->with('success', 'Notulensi berhasil ditambahkan.');
+     $notulensi = Notulensi::create($validated);
+
+return redirect()->route('pengadu.show', $notulensi->pengadu_id)->with('success', 'Notulensi berhasil ditambahkan.');
     }
 
     public function show(Notulensi $notulensi)
@@ -83,15 +86,16 @@ class NotulensiController extends Controller
             'perihal' => 'required|string|max:255',
             'uraian_kronologi' => 'required|string',
             'penanganan' => 'nullable|string',
-            'status' => 'required|in:baru,diproses,selesai',
+            'status' => 'required|in:konsultasi,dilimpahkan,ditindaklanjuti,ditangani_jabis,selesai',
             'pic' => 'nullable|string|max:255',
             'notulis' => 'nullable|string|max:255',
             'catatan' => 'nullable|string',
         ]);
+        
 
-        $notulensi->update($validated);
+      $notulensi->update($validated);
 
-        return redirect()->route('notulensi.index')->with('success', 'Notulensi berhasil diperbarui.');
+return redirect()->route('pengadu.show', $notulensi->pengadu_id)->with('success', 'Notulensi berhasil diperbarui.');  
     }
 
     public function destroy(Notulensi $notulensi)

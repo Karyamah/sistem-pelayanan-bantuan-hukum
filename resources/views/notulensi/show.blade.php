@@ -8,13 +8,7 @@
 
             <div class="d-flex justify-content-between align-items-start mb-3">
                 <h5 class="fw-semibold">{{ $notulensi->no_registrasi }}</h5>
-                @if ($notulensi->status == 'baru')
-                    <span class="badge bg-secondary fs-6">Baru</span>
-                @elseif ($notulensi->status == 'diproses')
-                    <span class="badge bg-warning text-dark fs-6">Diproses</span>
-                @else
-                    <span class="badge bg-success fs-6">Selesai</span>
-                @endif
+                <span class="badge fs-6 {{ $notulensi->status_badge }}">{{ $notulensi->status_label }}</span>
             </div>
 
             <table class="table table-borderless">
@@ -70,15 +64,19 @@
                     <th>Catatan</th>
                     <td>: {{ $notulensi->catatan ?? '-' }}</td>
                 </tr>
+                <tr>
+    <th>Dicatat Oleh</th>
+    <td>: {{ $notulensi->pencatat->name ?? '-' }}</td>
+</tr>
             </table>
 
             <div class="d-flex gap-2">
                 <a href="{{ route('notulensi.edit', $notulensi) }}" class="btn btn-warning">
                     <i class="bi bi-pencil"></i> Edit
                 </a>
-                <a href="{{ route('notulensi.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Kembali
-                </a>
+               <a href="{{ route('pengadu.show', $notulensi->pengadu_id) }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Kembali
+</a>
             </div>
 
         </div>

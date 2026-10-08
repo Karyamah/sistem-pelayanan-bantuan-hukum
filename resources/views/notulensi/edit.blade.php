@@ -58,11 +58,17 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Perihal</label>
-                    <input type="text" name="perihal" value="{{ old('perihal', $notulensi->perihal) }}" class="form-control" required>
-                </div>
-
+                
+<div class="mb-3">
+    <label class="form-label">Perihal</label>
+    <input type="text" name="perihal" value="{{ old('perihal', $notulensi->perihal) }}" class="form-control" list="daftar-perihal" placeholder="Pilih dari daftar atau ketik sendiri" autocomplete="off" required>
+    <datalist id="daftar-perihal">
+        @foreach (\App\Models\Notulensi::PERIHAL as $p)
+            <option value="{{ $p }}">
+        @endforeach
+    </datalist>
+    <small class="text-muted">Hapus isi kolom untuk melihat semua pilihan, atau ketik sendiri.</small>
+</div>
                 <div class="mb-3">
                     <label class="form-label">Uraian Singkat / Kronologi</label>
                     <textarea name="uraian_kronologi" class="form-control" rows="4" required>{{ old('uraian_kronologi', $notulensi->uraian_kronologi) }}</textarea>
@@ -77,10 +83,10 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select" required>
-                            <option value="baru" {{ old('status', $notulensi->status) == 'baru' ? 'selected' : '' }}>Baru</option>
-                            <option value="diproses" {{ old('status', $notulensi->status) == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                            <option value="selesai" {{ old('status', $notulensi->status) == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                        </select>
+    @foreach (\App\Models\Notulensi::STATUS as $kode => $info)
+        <option value="{{ $kode }}" {{ old('status') == $kode ? 'selected' : '' }}>{{ $info['label'] }}</option>
+    @endforeach
+</select>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">PIC</label>
@@ -101,7 +107,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-check-lg"></i> Update
                     </button>
-                    <a href="{{ route('notulensi.index') }}" class="btn btn-outline-secondary">Batal</a>
+                    <a href="{{ route('pengadu.show', $notulensi->pengadu_id) }}" class="btn btn-outline-secondary">Batal</a>
                 </div>
             </form>
 

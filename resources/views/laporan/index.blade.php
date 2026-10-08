@@ -18,11 +18,13 @@
                 <div class="col-md-3">
                     <label class="form-label small">Status</label>
                     <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
-                        <option value="baru" {{ request('status') == 'baru' ? 'selected' : '' }}>Baru</option>
-                        <option value="diproses" {{ request('status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
-                        <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
-                    </select>
+    <option value="">Semua Status</option>
+    @foreach (\App\Models\Notulensi::STATUS as $kode => $info)
+        <option value="{{ $kode }}" {{ request('status') == $kode ? 'selected' : '' }}>
+            {{ $info['label'] }}
+        </option>
+    @endforeach
+</select>
                 </div>
                 <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn btn-success flex-fill">
@@ -34,12 +36,17 @@
                 </div>
             </form>
 
-            <div class="d-flex gap-3 mb-3">
-                <span class="badge bg-light text-dark border">Total: {{ $notulensis->count() }} data</span>
-                <span class="badge bg-secondary">Baru: {{ $notulensis->where('status', 'baru')->count() }}</span>
-                <span class="badge bg-warning text-dark">Diproses: {{ $notulensis->where('status', 'diproses')->count() }}</span>
-                <span class="badge bg-success">Selesai: {{ $notulensis->where('status', 'selesai')->count() }}</span>
-            </div>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+    <span class="badge bg-light text-dark border">
+        Total: {{ $notulensis->count() }} data
+    </span>
+
+    @foreach (\App\Models\Notulensi::STATUS as $kode => $info)
+        <span class="badge {{ $info['badge'] }}">
+            {{ $info['short'] }}: {{ $notulensis->where('status', $kode)->count() }}
+        </span>
+    @endforeach
+</div>
 
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
@@ -62,13 +69,7 @@
                                 <td>{{ Str::limit($item->perihal, 30) }}</td>
                                 <td>{{ $item->pic ?? '-' }}</td>
                                 <td>
-                                    @if ($item->status == 'baru')
-                                        <span class="badge bg-secondary">Baru</span>
-                                    @elseif ($item->status == 'diproses')
-                                        <span class="badge bg-warning text-dark">Diproses</span>
-                                    @else
-                                        <span class="badge bg-success">Selesai</span>
-                                    @endif
+                                  <span class="badge {{ $item->status_badge }}">{{ $item->status_label }}</span>
                                 </td>
                             </tr>
                         @empty

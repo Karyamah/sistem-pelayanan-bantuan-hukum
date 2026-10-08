@@ -83,17 +83,14 @@
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            @if (in_array(Auth::user()->role, ['admin', 'petugas']))
-                <a href="{{ route('pengadu.index') }}" class="nav-link {{ request()->routeIs('pengadu.*') ? 'active' : '' }}">
-                    <i class="bi bi-people"></i> Data Pengadu
-                </a>
-                <a href="{{ route('notulensi.index') }}" class="nav-link {{ request()->routeIs('notulensi.*') ? 'active' : '' }}">
-                    <i class="bi bi-journal-text"></i> Notulensi
-                </a>
-                <a href="{{ route('dokumentasi.index') }}" class="nav-link {{ request()->routeIs('dokumentasi.*') ? 'active' : '' }}">
-                    <i class="bi bi-images"></i> Dokumentasi Kegiatan
-                </a>
-            @endif
+           @if (in_array(Auth::user()->role, ['admin', 'petugas']))
+    <a href="{{ route('pengadu.index') }}" class="nav-link {{ request()->routeIs('pengadu.*') || request()->routeIs('notulensi.*') ? 'active' : '' }}">
+        <i class="bi bi-people"></i> Data Pengaduan
+    </a>
+    <a href="{{ route('dokumentasi.index') }}" class="nav-link {{ request()->routeIs('dokumentasi.*') ? 'active' : '' }}">
+        <i class="bi bi-images"></i> Dokumentasi Kegiatan
+    </a>
+@endif
 
             <a href="{{ route('laporan.index') }}" class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}">
                 <i class="bi bi-file-earmark-bar-graph"></i> Laporan

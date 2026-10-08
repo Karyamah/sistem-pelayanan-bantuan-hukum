@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="fw-semibold">Data Pengadu</h2>
+        <h2 class="fw-semibold">Data Pengaduan</h2>
     </x-slot>
 
     <div class="card border-0 shadow-sm">
@@ -18,8 +18,8 @@
                     </button>
                 </form>
                 <a href="{{ route('pengadu.create') }}" class="btn btn-success">
-                    <i class="bi bi-plus-lg"></i> Tambah Pengadu
-                </a>
+    <i class="bi bi-plus-lg"></i> Tambah Pengaduan
+</a>
             </div>
 
             <div class="table-responsive">
