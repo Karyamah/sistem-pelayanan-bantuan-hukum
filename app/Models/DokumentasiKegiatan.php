@@ -15,6 +15,7 @@ class DokumentasiKegiatan extends Model
         'keterangan',
         'tanggal_kegiatan',
         'user_id',
+        'notulensi_id',
     ];
 
     protected $casts = [
@@ -24,5 +25,10 @@ class DokumentasiKegiatan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function notulensi()
+    {
+        return $this->belongsTo(Notulensi::class);
     }
 }

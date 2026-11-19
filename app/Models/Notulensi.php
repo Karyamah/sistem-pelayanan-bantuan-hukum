@@ -13,8 +13,8 @@ class Notulensi extends Model
         'konsultasi'      => ['label' => 'Diberikan Konsultasi Hukum',            'short' => 'Konsultasi Hukum',     'badge' => 'bg-info text-dark',    'icon' => 'bi-chat-dots'],
         'dilimpahkan'     => ['label' => 'Dilimpahkan ke Tim Jabis',              'short' => 'Dilimpahkan ke Jabis', 'badge' => 'bg-primary',           'icon' => 'bi-send'],
         'ditindaklanjuti' => ['label' => 'Ditindaklanjuti oleh Pihak Biro Hukum', 'short' => 'Ditindaklanjuti',      'badge' => 'bg-warning text-dark', 'icon' => 'bi-hourglass-split'],
-        'ditangani_jabis' => ['label' => 'Ditangani Tim Jabis',                   'short' => 'Ditangani Jabis',      'badge' => 'bg-secondary',         'icon' => 'bi-people'],
-        'selesai'         => ['label' => 'Selesai',                               'short' => 'Selesai',              'badge' => 'bg-success',           'icon' => 'bi-check-circle'],
+        'ditangani_jabis' => ['label' => 'Ditangani Tim Jabis',                   'short' => 'Ditangani Jabis',     'badge' => 'bg-secondary',         'icon' => 'bi-people'],
+        'selesai'         => ['label' => 'Selesai',                               'short' => 'Selesai',             'badge' => 'bg-success',           'icon' => 'bi-check-circle'],
     ];
 
     public const PERIHAL = [
@@ -42,7 +42,7 @@ class Notulensi extends Model
         'pic',
         'notulis',
         'catatan',
-         'dicatat_oleh',
+        'dicatat_oleh',
     ];
 
     protected $casts = [
@@ -63,8 +63,14 @@ class Notulensi extends Model
     {
         return $this->belongsTo(Pengadu::class);
     }
+
     public function pencatat()
-{
-    return $this->belongsTo(User::class, 'dicatat_oleh');
-}
+    {
+        return $this->belongsTo(User::class, 'dicatat_oleh');
+    }
+
+    public function dokumentasiKegiatans()
+    {
+        return $this->hasMany(DokumentasiKegiatan::class);
+    }
 }
